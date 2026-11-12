@@ -6,7 +6,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Reads your API key securely from Render's Environment Variables
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 app.post('/api/research', async (req, res) => {
@@ -28,7 +27,7 @@ app.post('/api/research', async (req, res) => {
     Format the response clearly with clean headings and bullet points.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-1.5-flash',
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }]
@@ -38,7 +37,7 @@ app.post('/api/research', async (req, res) => {
     res.json({ result: response.text });
   } catch (error) {
     console.error('Error generating research:', error);
-    res.status(500).json({ error: 'Failed to research company.' });
+    res.status(500).json({ error: error.message || 'Failed to research company.' });
   }
 });
 

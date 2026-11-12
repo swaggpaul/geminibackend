@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Research AI</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
+        input { width: 70%; padding: 10px; font-size: 16px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        #result { margin-top: 20px; white-space: pre-wrap; background: #f4f4f4; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>AI Company Researcher</h1>
+    <p>Enter a company website URL to generate an instant research profile:</p>
+    
+    <input type="text" id="urlInput" placeholder="https://example.com">
+    <button onclick="researchCompany()">Research</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function researchCompany() {
+            const url = document.getElementById('urlInput').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!url) {
+                alert('Please enter a valid URL');
+                return;
+            }
+
+            resultDiv.innerText = 'Researching company... Please wait.';
+
+            try {
+                const response = await fetch('/api/research', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    resultDiv.innerText = data.result;
+                } else {
+                    resultDiv.innerText = `Error: ${data.error}`;
+                }
+            } catch (err) {
+                resultDiv.innerText = 'An error occurred while connecting to the server.';
+            }
+        }
+    </script>
+</body>
+</html>

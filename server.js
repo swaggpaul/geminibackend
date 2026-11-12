@@ -27,7 +27,7 @@ app.post('/api/research', async (req, res) => {
     Format the response clearly with clean headings and bullet points.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-3.8-flash',
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }]
